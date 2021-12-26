@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <p id="answer"></p>
+        <!-- <iframe src="index.html" frameborder="0" style="height: 100vh; width: 100vh"></iframe> -->
+    </body>
+    <script>
+        function isMobile() {
+            var match = window.matchMedia || window.msMatchMedia;
+            if (match) {
+                var mq = match("(pointer:coarse)");
+                return mq.matches;
+            }
+            return false;
+        }
+
+        let ans = document.getElementById("answer");
+        // var touchDevice = "ontouchstart" in document.documentElement;
+        console.log(isMobile());
+        ans.innerText = isMobile();
+    </script>
+</html>

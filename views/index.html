@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+        <!-- Bootstrap CSS -->
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous"
+        />
+
+        <link rel="stylesheet" href="css/style.css" />
+
+        <title>Hai!</title>
+    </head>
+    <body class="text-center" style="background-color: #5372f0" onload="detect()">
+        <div class="wrapper">
+            <!-- <header>Pesan singkat!</header> -->
+            <div class="content mb-1">
+                <div class="msg-area">
+                    <i class="fas fa-quote-left"></i>
+                    <p class="msg"></p>
+                    <i class="fas fa-quote-right"></i>
+                </div>
+                <div class="author">
+                    <!-- <span>__</span>
+                    <span class="name">Best regards, Ordinary People</span> -->
+                </div>
+            </div>
+            <!-- <div class="buttons">
+                <div class="features">
+                    <ul>
+                        <li class="speech"><i class="fas fa-volume-up"></i></li>
+                        <li class="copy"><i class="fas fa-copy"></i></li>
+                        <li class="twitter"><i class="fab fa-twitter"></i></li>
+                    </ul>
+                    <button>New Quote</button>
+                </div>
+            </div> -->
+        </div>
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"
+        ></script>
+        <script>
+            function isMobile() {
+                const toMatch = [/Android/i, /webOS/i, /iPhone/i, /iPad/i, /iPod/i, /BlackBerry/i, /Windows Phone/i];
+
+                return toMatch.some((toMatchItem) => {
+                    return navigator.userAgent.match(toMatchItem);
+                });
+            }
+
+            function getModeName(browserName) {
+                switch (browserName) {
+                    case "Safari for macOS":
+                    case "Firefox":
+                    case "Brave":
+                        return "a Private Window";
+                        break;
+                    case "Safari for iOS":
+                        return "a Private Tab";
+                        break;
+                    case "Chrome":
+                    case "Chromium":
+                        return "an Incognito Window";
+                        break;
+                    case "Internet Explorer":
+                    case "Edge":
+                        return "an InPrivate Window";
+                        break;
+                }
+                throw new Error("Could not get mode name");
+            }
+
+            function detect() {
+                try {
+                    detectIncognito(function (obj) {
+                        if (obj.isPrivate) {
+                            if (isMobile()) {
+                                // android doesnt use localstorage
+                                if (navigator.storage == null) {
+                                    // YOU ARE IN MOBILE PHONE
+                                    $.get("/visitedCount", (data) => {
+                                        $(".msg").text(data.message);
+                                    });
+                                } else {
+                                    // YOU ARE NOT IN MOBILE PHONE
+                                    $(".msg").text("Please open in mobile phone :)");
+                                }
+                            } else {
+                                $(".msg").text("Please open in mobile phone :)");
+                            }
+                        } else {
+                            $(".msg").text("Please open in incognito :)");
+                        }
+                    });
+                } catch (e) {
+                    console.log("Error, Could not get Incognito status", e);
+                }
+            }
+        </script>
+        <script src="js/detectIncognito.min.js"></script>
+    </body>
+</html>

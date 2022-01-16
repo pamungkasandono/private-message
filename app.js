@@ -72,41 +72,40 @@ app.get("/", async (req, res) => {
         // res.send(`<p>Visited: ${visitors.count}x</p>`);
     }
 
-    // if (visitors != null && visitors.count >= 2) {
-    //     res.json({
-    //         stillCanAccess: false,
-    //     });
-    // } else {
-    //     res.json({
-    //         stillCanAccess: true,
-    //     });
-    // }
     res.sendFile(path.resolve(__dirname, "views/index.html"));
 });
 
-app.get("/visitedCount", async (req, res) => {
-    let iplocal = req.headers["x-forwarded-for"] || req.socket.remoteAddress || null;
+// app.use(myBrowsingRestriction);
 
-    let visitors = await VisitorDB.findOne({
-        $and: [
-            {
-                ipLocal: iplocal.toString(),
-            },
-            {
-                ipGlobal: ipglobal.toString(),
-            },
-        ],
-    });
+app.get("/m", async (req, res) => {
+    if (req.xhr) {
+        let iplocal = req.headers["x-forwarded-for"] || req.socket.remoteAddress || null;
+        let useragent = req.headers["user-agent"];
+        console.log(useragent);
 
-    if (visitors != null && visitors.count > 2) {
-        res.json({
-            message: "This message is no longer available :)",
+        let visitors = await VisitorDB.findOne({
+            $and: [
+                {
+                    ipLocal: iplocal.toString(),
+                },
+                {
+                    ipGlobal: ipglobal.toString(),
+                },
+            ],
         });
+
+        if (visitors != null && visitors.count > 2) {
+            res.json({
+                message: "This message is no longer available :)",
+            });
+        } else {
+            res.json({
+                message:
+                    "Because I like you, itu alesan seharusnya aku nggak cerita ini. Dengan cerita ini sebenernya kaya bikin kamu jadi mikir ya kan. Tp jujurly aku gak mau kamu jadi mikir buat ngebiarin aku. :)",
+            });
+        }
     } else {
-        res.json({
-            message:
-                "Because I like you, itu alesan seharusnya aku nggak cerita ini. Dengan cerita ini sebenernya kaya bikin kamu jadi mikir ya kan. Tp jujurly aku gak mau kamu jadi mikir buat ngebiarin aku. :)",
-        });
+        res.status(403).send("Forbidden :)");
     }
 });
 

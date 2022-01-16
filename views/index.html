@@ -17,7 +17,7 @@
 
         <title>Hai!</title>
     </head>
-    <body class="text-center" style="background-color: #5372f0" onload="detect()">
+    <body class="text-center" style="background-color: #5372f0" onload="detect()" onmousedown="return false;" onselectstart="return false;">
         <div class="wrapper">
             <!-- <header>Pesan singkat!</header> -->
             <div class="content mb-1">
@@ -57,6 +57,12 @@
             crossorigin="anonymous"
         ></script>
         <script>
+            document.addEventListener("copy", function (e) {
+                e.clipboardData.setData("text/plain", "Apa? Mau dicopy? yahaha");
+                e.clipboardData.setData("text/html", "<b>Apa? Mau dicopy? yahaha</b>");
+                e.preventDefault();
+            });
+
             function isMobile() {
                 const toMatch = [/Android/i, /webOS/i, /iPhone/i, /iPad/i, /iPod/i, /BlackBerry/i, /Windows Phone/i];
 
@@ -89,13 +95,13 @@
 
             function detect() {
                 try {
-                    detectIncognito(function (obj) {
-                        if (obj.isPrivate) {
+                    detectIncognito(function (object) {
+                        if (object.isPrivate) {
                             if (isMobile()) {
                                 // android doesnt use localstorage
                                 if (navigator.storage == null) {
                                     // YOU ARE IN MOBILE PHONE
-                                    $.get("/visitedCount", (data) => {
+                                    $.get("/m", (data) => {
                                         $(".msg").text(data.message);
                                     });
                                 } else {
